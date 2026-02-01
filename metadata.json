@@ -1,0 +1,7 @@
+{
+  "name": "Aethel: Syntropic Intelligence Engine",
+  "description": "A sophisticated regenerative design platform that uses Gemini AI to architect syntropic agroforestry systems and complex collaborative ecosystems based on natural succession laws.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
