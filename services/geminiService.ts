@@ -21,7 +21,7 @@ const DESIGN_SCHEMA = {
           purpose: { type: "array", items: { type: "string" } },
           plantingTime: { type: "string" }
         },
-        required: ["name", "stratum", "lifeCycleYears"],
+        required: ["name", "stratum", "lifeCycleYears", "purpose", "plantingTime"],
         additionalProperties: false
       }
     },
@@ -38,12 +38,12 @@ const DESIGN_SCHEMA = {
           benefit: { type: "string" },
           timing: { type: "string" }
         },
-        required: ["phase", "action", "timing"],
+        required: ["phase", "action", "targetSpecies", "benefit", "timing"],
         additionalProperties: false
       }
     }
   },
-  required: ["projectName", "speciesList", "successionStrategy"],
+  required: ["projectName", "location", "climate", "speciesList", "successionStrategy", "managementTips"],
   additionalProperties: false
 };
 
@@ -90,7 +90,7 @@ export async function generateSyntropicDesign(prompt: string, location = "Point,
   }
   if (!design || typeof design !== "object") throw new Error("Local model output was not a JSON object.");
   const candidate = design as Partial<SyntropicDesign>;
-  if (typeof candidate.projectName !== "string" || !Array.isArray(candidate.speciesList) || typeof candidate.successionStrategy !== "string") {
+  if (typeof candidate.projectName !== "string" || typeof candidate.location !== "string" || typeof candidate.climate !== "string" || !Array.isArray(candidate.speciesList) || typeof candidate.successionStrategy !== "string" || !Array.isArray(candidate.managementTips) || !candidate.speciesList.every((species) => species && typeof species.name === "string" && typeof species.stratum === "string" && typeof species.lifeCycleYears === "number" && Array.isArray(species.purpose) && typeof species.plantingTime === "string")) {
     throw new Error("Local model JSON failed required design fields; no design was accepted.");
   }
   return candidate as SyntropicDesign;
